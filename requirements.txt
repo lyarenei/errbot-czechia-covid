@@ -1,0 +1,3 @@
+errbot
+requests
+redis

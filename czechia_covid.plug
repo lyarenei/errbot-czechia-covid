@@ -1,0 +1,9 @@
+[Core]
+name = Czechia Covid
+module = czechia_covid
+
+[Documentation]
+description = Get statistics about current Covid situation in Czechia
+
+[Python]
+version = 3
