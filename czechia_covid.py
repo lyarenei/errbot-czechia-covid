@@ -42,7 +42,7 @@ class CzechiaCovid(BotPlugin):
         previous_data = get_redis_data()
 
         # Save only when dates differ, so the comparison will be always between days
-        if datetime.datetime.now().strftime(DT_FORMAT) != current_data.date:
+        if datetime.datetime.now().strftime(DT_FORMAT) != previous_data.date:
             save_to_redis(current_data)
 
         pcr_comparison = format_comparison(previous_data.tests_pcr, current_data.tests_pcr)
