@@ -19,3 +19,7 @@ When you have Redis up and running, export env variables `REDIS_HOST` and `REDIS
 with IP address of the redis instance and its port.
 If you are running everything locally with default settings, then these variables should be
 `REDIS_HOST=localhost` and `REDIS_PORT=6379`.
+
+## Message customization
+The only way to customize the report message is to fork this repository 
+and update the message in the `czechia_covid.py` file.
