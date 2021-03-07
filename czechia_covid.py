@@ -65,18 +65,18 @@ class CzechiaCovid(BotPlugin):
         return f"**Aktuální situace Covid-19 k datu: {current_data.date}**\n" \
                ":nothing:\n" \
                "\n**Testy** :health_worker:\n" \
-               f"\tPCR: **{format_number(current_data.tests_pcr)}**{pcr_comparison}\n" \
-               f"\tAntigen: **{format_number(current_data.tests_antigen)}**{antigen_comparison}\n" \
-               f"\tCelkem: **{format_number(current_data.total_tests)}**{total_tests_comparison}\n" \
+               f"\tPCR: **{format_number(current_data.tests_pcr)}** {pcr_comparison}\n" \
+               f"\tAntigen: **{format_number(current_data.tests_antigen)}** {antigen_comparison}\n" \
+               f"\tCelkem: **{format_number(current_data.total_tests)}** {total_tests_comparison}\n" \
                ":nothing:\n" \
                "\n**Infekce** :coronavirus-wink:\n" \
-               f"\tAktuálně infikovaných: **{format_number(current_data.active_infections)}**{active_infections_comparison}\n" \
-               f"\tUzdravených: **{format_number(current_data.recoveries)}**{recoveries_comparison}\n" \
-               f"\tCelkem nakažených: **{format_number(current_data.total_infections)}**{total_infections_comparison}\n" \
+               f"\tAktuálně infikovaných: **{format_number(current_data.active_infections)}** {active_infections_comparison}\n" \
+               f"\tUzdravených: **{format_number(current_data.recoveries)}** {recoveries_comparison}\n" \
+               f"\tCelkem nakažených: **{format_number(current_data.total_infections)}** {total_infections_comparison}\n" \
                ":nothing:\n" \
                "\n**Méně pozitivní statistiky** :hospital:\n" \
-               f"\tHospitalizovaných: **{format_number(current_data.hospitalized)}**{hospitalized_comparison}\n" \
-               f"\tÚmrtí: **{format_number(current_data.deceased)}**{deceased_comparison}\n" \
+               f"\tHospitalizovaných: **{format_number(current_data.hospitalized)}** {hospitalized_comparison}\n" \
+               f"\tÚmrtí: **{format_number(current_data.deceased)}** {deceased_comparison}\n" \
                ":nothing:\n" \
                "\n**Vakcinace** :syringe:\n" \
                f"\tPrvních dávek: **{format_number(current_data.vaccinations_first_dose)}** ≈ {first_dose_percent} populace {first_dose_comparison}\n" \
@@ -149,7 +149,7 @@ def format_comparison(old_value: int, new_value: int) -> str:
         if difference := new_value - old_value:
             return f' (+{format_number(difference)})'
 
-    return ' (beze změny)'
+    return '(beze změny)'
 
 
 REDIS_DB = redis.Redis(host=os.environ['REDIS_HOST'], port=os.environ['REDIS_PORT'], db=0)
