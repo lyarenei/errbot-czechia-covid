@@ -62,7 +62,13 @@ class CzechiaCovid(BotPlugin):
         first_dose_percent = get_population_percentage(current_data.vaccinations_first_dose)
         second_dose_percent = get_population_percentage(current_data.vaccinations_second_dose)
 
-        return f"**Aktuální situace Covid-19 k datu: {current_data.date}**\n" \
+        if previous_data.date == datetime.datetime.now().strftime(DT_FORMAT):
+            msg_head = f"**Aktuální situace Covid-19 k datu: {current_data.date}**"
+
+        else:
+            msg_head = f"**Aktuální situace Covid-19 k datu: {current_data.date} (ve srovnání s {previous_data.date})**"
+
+        return f"{msg_head}\n" \
                ":nothing:\n" \
                "\n**Testy** :health_worker:\n" \
                f"\tPCR: **{format_number(current_data.tests_pcr)}** {pcr_comparison}\n" \
