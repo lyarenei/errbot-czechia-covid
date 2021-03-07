@@ -147,7 +147,10 @@ def format_number(number: int) -> str:
 def format_comparison(old_value: int, new_value: int) -> str:
     if old_value:
         if difference := new_value - old_value:
-            return f' (+{format_number(difference)})'
+            if difference < 0:
+                return f'({format_number(difference)})'
+
+            return f'(+{format_number(difference)})'
 
     return '(beze změny)'
 
