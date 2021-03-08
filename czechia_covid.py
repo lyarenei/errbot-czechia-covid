@@ -158,4 +158,8 @@ def format_comparison(old_value: int, new_value: int) -> str:
     return '(beze změny)'
 
 
-REDIS_DB = redis.Redis(host=os.environ['REDIS_HOST'], port=os.environ['REDIS_PORT'], db=0)
+REDIS_DB = redis.Redis(host=os.environ['REDIS_HOST'],
+                       port=os.environ['REDIS_PORT'],
+                       db=0,
+                       charset="utf-8",
+                       decode_responses=True)
