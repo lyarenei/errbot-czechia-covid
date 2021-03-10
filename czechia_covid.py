@@ -7,7 +7,8 @@ import redis
 
 from errbot import BotPlugin, botcmd
 
-COVID_PREFIX_REDIS = 'czechia_covid:'
+COVID_CACHED_PREFIX = 'czechia_covid_cached.'
+COVID_PREVIOUS_PREFIX = 'czechia_covid_previous.'
 POPULATION = 10_707_839
 DT_FORMAT = '%d. %m. %Y'
 
@@ -39,11 +40,14 @@ class CzechiaCovid(BotPlugin):
     @botcmd
     def covid(self, msg, args):
         current_data = fetch_data()
-        previous_data = get_redis_data(COVID_PREFIX_REDIS)
+        cached_data = get_redis_data(COVID_CACHED_PREFIX)
 
-        # Save only when dates differ, so the comparison will be always between days
-        if current_data.date != previous_data.date:
-            save_to_redis(current_data, COVID_PREFIX_REDIS)
+        # Rotate data on new day, cache current day for next rotation
+        if cached_data.date != current_data.date:
+            save_to_redis(cached_data, COVID_PREVIOUS_PREFIX)
+            save_to_redis(current_data, COVID_CACHED_PREFIX)
+
+        previous_data = get_redis_data(COVID_PREVIOUS_PREFIX)
 
         pcr_comparison = format_comparison(previous_data.tests_pcr, current_data.tests_pcr)
         antigen_comparison = format_comparison(previous_data.tests_antigen, current_data.tests_antigen)
