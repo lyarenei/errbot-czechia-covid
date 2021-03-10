@@ -39,11 +39,11 @@ class CzechiaCovid(BotPlugin):
     @botcmd
     def covid(self, msg, args):
         current_data = fetch_data()
-        previous_data = get_redis_data()
+        previous_data = get_redis_data(COVID_PREFIX_REDIS)
 
         # Save only when dates differ, so the comparison will be always between days
         if current_data.date != previous_data.date:
-            save_to_redis(current_data)
+            save_to_redis(current_data, COVID_PREFIX_REDIS)
 
         pcr_comparison = format_comparison(previous_data.tests_pcr, current_data.tests_pcr)
         antigen_comparison = format_comparison(previous_data.tests_antigen, current_data.tests_antigen)
@@ -111,28 +111,24 @@ def fetch_data() -> CovidData:
     return data
 
 
-def get_redis_data() -> CovidData:
+def get_redis_data(prefix: str) -> CovidData:
     data = CovidData()
 
     for attr_name in data.__annotations__.keys():
         if attr_name != 'date':
-            value = int(REDIS_DB.get(get_redis_key(attr_name))) if REDIS_DB.exists(get_redis_key(attr_name)) else 0
+            value = int(REDIS_DB.get(prefix + attr_name)) if REDIS_DB.exists(prefix + attr_name) else 0
 
         else:
-            value = str(REDIS_DB.get(get_redis_key(attr_name))) if REDIS_DB.exists(get_redis_key(attr_name)) else ''
+            value = str(REDIS_DB.get(prefix + attr_name)) if REDIS_DB.exists(prefix + attr_name) else ''
 
         data.__setattr__(attr_name, value)
 
     return data
 
 
-def save_to_redis(data: CovidData):
+def save_to_redis(data: CovidData, prefix: str):
     for attr_name, value in data.__dict__.items():
-        REDIS_DB.set(get_redis_key(attr_name), value)
-
-
-def get_redis_key(value_name: str) -> str:
-    return COVID_PREFIX_REDIS + value_name
+        REDIS_DB.set(prefix + attr_name, value)
 
 
 def get_population_percentage(num: int):
